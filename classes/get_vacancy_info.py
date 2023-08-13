@@ -99,17 +99,20 @@ class Get_Vacancies_Info(Get_Info):
         info = self.get_vacancies_info(company_id)
         return info
 
-    # def amount_info(self):
-    #     yd = self.get_info_yd()
-    #     sb = self.get_info_sb()
-    #     vk = self.get_info_vk()
-    #     al = self.get_info_al()
-    #     tk = self.get_info_tk()
-    #     gz = self.get_info_gz()
-    #     vt = self.get_info_vt()
-    #     sr = self.get_info_sr()
-    #     tl = self.get_info_tl()
-    #     mt = self.get_info_mt()
-    #     amount = [yd, sb, vk, al, tk, gz, vt, sr, tl, mt]
-    #     for x in amount:
-    #         print(x)
+    def amount_info(self):
+        """
+        Метод для сбора общей информации о вакансиях
+        """
+        yd = self.get_info_yd()
+        sb = self.get_info_sb()
+        vk = self.get_info_vk()
+        al = self.get_info_al()
+        tk = self.get_info_tk()
+        gz = self.get_info_gz()
+        vt = self.get_info_vt()
+        sr = self.get_info_sr()
+        tl = self.get_info_tl()
+        mt = self.get_info_mt()
+        amount = yd, sb, vk, al, tk, gz, vt, sr, tl, mt
+        return amount
+

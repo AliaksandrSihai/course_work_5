@@ -99,18 +99,21 @@ class Get_Companies_Info(Get_Info):
         info = yd.get_company_info(company_id)
         return info
 
-    # def amount_info(self):
-    #     yd = self.get_info_yd()
-    #     sb = self.get_info_sb()
-    #     vk = self.get_info_vk()
-    #     al = self.get_info_al()
-    #     tk = self.get_info_tk()
-    #     gz = self.get_info_gz()
-    #     vt = self.get_info_vt()
-    #     sr = self.get_info_sr()
-    #     tl = self.get_info_tl()
-    #     mt = self.get_info_mt()
-    #     amount = yd, sb, vk, al, tk, gz, vt, sr, tl, mt
-    #     for x in amount:
-    #         print(x)
+    def amount_info(self):
+        """
+        Метод для сбора общей информации о всех компаниях
+        """
+        yd = self.get_info_yd()
+        sb = self.get_info_sb()
+        vk = self.get_info_vk()
+        al = self.get_info_al()
+        tk = self.get_info_tk()
+        gz = self.get_info_gz()
+        vt = self.get_info_vt()
+        sr = self.get_info_sr()
+        tl = self.get_info_tl()
+        mt = self.get_info_mt()
+        amount = yd, sb, vk, al, tk, gz, vt, sr, tl, mt
+        return amount
+
 
