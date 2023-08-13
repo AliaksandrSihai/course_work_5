@@ -1,0 +1,34 @@
+--Создание таблиц в БД:
+-- Таблица с выбранными компаниями
+CREATE TABLE IF NOT EXISTS companies (company_id int,
+                        company_name varchar,
+                        company_url text,
+                        company_area varchar,
+                        company_industries text,
+                        quantity_open_vacancies int);
+
+--Таблица с открытыми вакансиями этих компаний
+CREATE TABLE IF NOT EXISTS vacancies (vacancy_id int,
+                        vacancy_name varchar,
+                        vacancy_url varchar,
+                        vacancy_area varchar,
+                        vacancy_requirement text,
+                        vacancy_responsibility text,
+                        vacancy_salary int,
+                        vacancy_published_date date,
+                        company_id int);
+
+--Добавление ограничений в таблицы:
+--PRIMARY KEY для таблицы companies
+ALTER TABLE companies
+    ADD CONSTRAINT pk_companies_company_id PRIMARY KEY (company_id);
+
+--PRIMARY KEY для таблицы vacancies
+ALTER TABLE vacancies
+    ADD CONSTRAINT pk_vacancies_vacancy_id PRIMARY KEY (vacancy_id);
+
+--FOREIGN KEY для таблицы vacancies
+ALTER TABLE vacancies
+    ADD CONSTRAINT fk_vacancies_company_id FOREIGN KEY(company_id) REFERENCES companies;
+
+
