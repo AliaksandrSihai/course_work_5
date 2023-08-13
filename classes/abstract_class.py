@@ -44,8 +44,8 @@ class Get_Info:
         info_to_db = []
         for x in info:
             salary = x['salary']
-            salary_range = f"{salary['from']}-{salary['to']}, валюта {salary['currency']}" if salary and salary[
-                'from'] and salary['to'] else "Не указано"
+            salary_range = salary['from'] if salary and salary[
+                'from'] else 0
             date = x['published_at']
             date_str = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
             publish_time = date_str.strftime('%Y-%m-%d')
