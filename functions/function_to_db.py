@@ -10,7 +10,7 @@ def add_info_to_db():
     """
     add_info = AddInfo()
     add_info.add_companies()
-    add_info.add_companies()
+    add_info.add_vacancies()
     return
 
 
