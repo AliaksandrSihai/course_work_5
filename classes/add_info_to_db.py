@@ -1,6 +1,6 @@
 import psycopg2
 
-from classes.get_company_info import Get_Companies_Info
+from classes.get_company_info import GetCompaniesInfo
 from classes.get_vacancy_info import GetVacanciesInfo
 
 
@@ -19,7 +19,7 @@ class AddInfo:
         """
         Добавление информации о компаниях в БД
         """
-        companies = Get_Companies_Info()
+        companies = GetCompaniesInfo()
         info_to_add = companies.amount_info()
         to_db = []
         for info in info_to_add:
