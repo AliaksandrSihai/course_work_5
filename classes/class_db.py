@@ -14,16 +14,18 @@ class DBManager:
 
     def get_companies_and_vacancies_count(self):
         """
-        Получает список всех компаний и количество вакансий у каждой компании
+        Получает список всех компаний и количество открытых вакансий у каждой компании
         """
 
         with self.conn:
             with self.conn.cursor() as cur:
-                cur.execute("SELECT company_name,COUNT(*) "
+                cur.execute("SELECT company_name, quantity_open_vacancies "
                             "FROM companies "
-                            "JOIN vacancies USING(company_id) "
-                            "GROUP BY company_name "
-                            "ORDER BY COUNT(*) DESC")
+                            "GROUP BY company_name, quantity_open_vacancies "
+                            "ORDER BY quantity_open_vacancies")
+                result = cur.fetchall()
+                print(result)
+                return result
 
     def get_all_vacancies(self):
         """
@@ -32,12 +34,14 @@ class DBManager:
         """
         with self.conn:
             with self.conn.cursor() as cur:
-                cur.execute("SELECT company_name, vacancy_name, vacancy_salary, vacancy_url "
+                cur.execute("SELECT vacancy_name, vacancy_salary, vacancy_url, company_name "
                             "FROM vacancies "
-                            "JOIN result USING(vacancy_id) "
                             "JOIN companies USING(company_id) "
-                            "GROUP BY company_name "
-                            "ORDER BY company_name")
+                            "GROUP BY vacancy_name, vacancy_salary, vacancy_url, company_name "
+                            "ORDER BY vacancy_salary")
+                result = cur.fetchall()
+                print(result)
+                return result
 
     def get_avg_salary(self):
         """
@@ -45,10 +49,13 @@ class DBManager:
         """
         with self.conn:
             with self.conn.cursor() as cur:
-                cur.execute("SELECT vacancy_name, AVG(vacancy_salary) "
+                cur.execute("SELECT vacancy_name, CAST(AVG(vacancy_salary) AS FLOAT) "
                             "FROM vacancies "
                             "GROUP BY vacancy_name "
-                            "ORDER BY AVG(vacancy_salary)")
+                            "ORDER BY CAST(AVG(vacancy_salary) AS FLOAT)")
+                result = cur.fetchall()
+                print(result)
+                return result
 
     def get_vacancies_with_higher_salary(self):
         """
@@ -58,17 +65,25 @@ class DBManager:
             with self.conn.cursor() as cur:
                 cur.execute("SELECT * "
                             "FROM vacancies "
-                            "WHERE vacancy_salary > (SELECT AVG(vacancy_salary) FROM vacancies) "
+                            "WHERE vacancy_salary > (SELECT CAST(AVG(vacancy_salary) AS FLOAT)  FROM vacancies) "
                             "ORDER BY vacancy_salary ")
+                result = cur.fetchall()
+                print(result)
+                return result
 
-    def get_vacancies_with_keyword(self, keyword):
+    def get_vacancies_with_keyword(self):
         """
         Получает список всех вакансий, в названии которых содержатся переданные в метод слова,
         например python
         """
+        keyword = input("Введите слово ")
         with self.conn:
             with self.conn.cursor() as cur:
                 cur.execute("SELECT * "
                             "FROM vacancies "
-                            f"WHERE vacancy_name LIKE '%{keyword}%' "
+                            f"WHERE vacancy_name LIKE '%{keyword}%' OR vacancy_requirement LIKE '%{keyword}%' "
+                            f"OR vacancy_responsibility LIKE '%{keyword}%' "
                             "ORDER BY vacancy_salary ")
+                result = cur.fetchall()
+                print(result)
+                return result

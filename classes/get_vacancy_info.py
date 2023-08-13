@@ -2,7 +2,7 @@
 from classes.abstract_class import Get_Info
 
 
-class Get_Vacancies_Info(Get_Info):
+class GetVacanciesInfo(Get_Info):
     """
     Реализация класса для получения информации о вакансиях
     """
@@ -85,7 +85,7 @@ class Get_Vacancies_Info(Get_Info):
 
     def get_info_tl(self):
         """
-        Вакансии теле 2
+        Вакансии теле_2
         """
         company_id = self.id_list['tele_2']
         info = self.get_vacancies_info(company_id)
@@ -115,4 +115,3 @@ class Get_Vacancies_Info(Get_Info):
         mt = self.get_info_mt()
         amount = yd, sb, vk, al, tk, gz, vt, sr, tl, mt
         return amount
-

@@ -1,7 +1,7 @@
 import psycopg2
 
 from classes.get_company_info import Get_Companies_Info
-from classes.get_vacancy_info import Get_Vacancies_Info
+from classes.get_vacancy_info import GetVacanciesInfo
 
 
 class AddInfo:
@@ -14,6 +14,7 @@ class AddInfo:
         user="aliaksandr",
         password='12345'
     )
+
     def add_companies(self):
         """
         Добавление информации о компаниях в БД
@@ -28,7 +29,8 @@ class AddInfo:
         with self.conn:
             with self.conn.cursor() as cur:
                 cur.executemany(
-                    "INSERT INTO companies(company_id, company_name, company_url, company_area, company_industries, quantity_open_vacancies) "
+                    "INSERT INTO companies(company_id, company_name, company_url, "
+                    "company_area, company_industries, quantity_open_vacancies) "
                     "VALUES(%s, %s, %s, %s, %s, %s)", to_db)
         return to_db
 
@@ -36,7 +38,7 @@ class AddInfo:
         """
          Добавление информации о вакансиях компаний в БД(добавлено по 100 вакансий от каждой компании)
         """
-        vacancies = Get_Vacancies_Info()
+        vacancies = GetVacanciesInfo()
         info_to_add = vacancies.amount_info()
         to_db = []
         for info in info_to_add:
@@ -47,9 +49,6 @@ class AddInfo:
             with self.conn.cursor() as cur:
                 cur.executemany(
                     "INSERT INTO vacancies(vacancy_id, vacancy_name, vacancy_url, vacancy_area, "
-                    "vacancy_requirement, vacancy_responsibility, vacancy_salary, vacancy_published_date) "
-                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", to_db)
+                    "vacancy_requirement, vacancy_responsibility, vacancy_salary, vacancy_published_date, company_id) "
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)", to_db)
         return to_db
-
-
-

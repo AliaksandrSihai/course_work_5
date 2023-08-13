@@ -56,7 +56,8 @@ class Get_Info:
                               'vacancy_requirement': x['snippet']['requirement'],
                               'vacancy_responsibility': x['snippet']['responsibility'],
                               'vacancy_salary': salary_range,
-                              'vacancy_published_date': publish_time
+                              'vacancy_published_date': publish_time,
+                              'company_id': x['employer']['id']
                               }
             info_to_db.append(info_to_column)
         return info_to_db
