@@ -2,6 +2,8 @@ import psycopg2
 
 from classes.add_info_to_db import AddInfo
 from classes.class_db import DBManager
+from config import config
+from utils import path_to_sql_script
 
 
 def add_info_to_db():
@@ -11,7 +13,6 @@ def add_info_to_db():
     add_info = AddInfo()
     add_info.add_companies()
     add_info.add_vacancies()
-    return
 
 
 def work_with_db():
@@ -22,34 +23,44 @@ def work_with_db():
     work_db = DBManager()
     print("Получение списка всех компаний и количество открытых вакансий у каждой компании:")
     work_db.get_companies_and_vacancies_count()
-    print()
-    print("Получение списка всех вакансий с указанием названия компании,"
+    print("\nПолучение списка всех вакансий с указанием названия компании,"
           "названия вакансии и зарплаты и ссылки на вакансию:")
     work_db.get_all_vacancies()
-    print()
-    print("Получение среднюю зарплату по вакансиям:")
+    print("\nПолучение среднюю зарплату по вакансиям:")
     work_db.get_avg_salary()
-    print()
-    print("Получение списка всех вакансий, у которых зарплата выше средней по всем вакансиям:")
+    print("\nПолучение списка всех вакансий, у которых зарплата выше средней по всем вакансиям:")
     work_db.get_vacancies_with_higher_salary()
-    print()
-    print("Получение списка всех вакансий, в названии которых содержатся переданные в метод слова:")
+    print("\nПолучение списка всех вакансий, в названии которых содержатся переданные в метод слова:")
     work_db.get_vacancies_with_keyword()
+
+
+def create_db():
+    """Создание базы данных (использовал название vacancies)"""
+
+    params = config()
+
+    conn = psycopg2.connect(dbname='postgres', **params)
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute(f"DROP DATABASE vacancies ")
+
+        with conn.cursor() as cur:
+            cur.execute(f"CREATE DATABASE vacancies ")
+
+    conn.close()
 
 
 def create_table():
 
-    with open('/home/aliaksandr_sigai/course_work_4/course_work_5/functions/sql_manual', 'r') as file:
+    with open(path_to_sql_script, 'r') as file:
         open_file = file.read()
-        conn = psycopg2.connect(
-            host="localhost",
-            database="vacancies",
-            user="aliaksandr",
-            password='12345'
-        )
+        params = config()
+        conn = psycopg2.connect(dbname='vacancies', **params)
         with conn:
             with conn.cursor() as cur:
                 cur.execute(open_file)
+
+        conn.close()
 
 
 def main():
@@ -57,11 +68,11 @@ def main():
     Функция с основным скриптом
 
     """
-    print("Здравствуйте, перед началом работы создайте базу данных по примеру("
-          "Создание новой БД: CREATE DATABASE vacancies)")
-    print("Создание таблиц  в БД vacancies: ")
+    print("Здравствуйте, для правильной работы будет создана новая база данных vacancies ")
+    create_db()
+    print("\nСоздание таблиц  в БД vacancies: ")
     create_table()
-    print("Добавление данных в БД vacancies: ")
+    print("\nДобавление данных в БД vacancies: ")
     add_info_to_db()
-    print("Получение данных из БД vacancies: ")
+    print("\nПолучение данных из БД vacancies: ")
     work_with_db()

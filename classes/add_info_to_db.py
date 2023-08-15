@@ -2,18 +2,15 @@ import psycopg2
 
 from classes.get_company_info import GetCompaniesInfo
 from classes.get_vacancy_info import GetVacanciesInfo
+from config import config
 
 
 class AddInfo:
     """
     Класс для добавления информации в БД
     """
-    conn = psycopg2.connect(
-        host="localhost",
-        database="vacancies",
-        user="aliaksandr",
-        password='12345'
-    )
+    params = config()
+    conn = psycopg2.connect(dbname='vacancies', **params)
 
     def add_companies(self):
         """
@@ -32,6 +29,7 @@ class AddInfo:
                     "INSERT INTO companies(company_id, company_name, company_url, "
                     "company_area, company_industries, quantity_open_vacancies) "
                     "VALUES(%s, %s, %s, %s, %s, %s)", to_db)
+
         return to_db
 
     def add_vacancies(self):
@@ -51,4 +49,5 @@ class AddInfo:
                     "INSERT INTO vacancies(vacancy_id, vacancy_name, vacancy_url, vacancy_area, "
                     "vacancy_requirement, vacancy_responsibility, vacancy_salary, vacancy_published_date, company_id) "
                     "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)", to_db)
+
         return to_db
