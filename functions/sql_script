@@ -1,6 +1,9 @@
 --Создание таблиц в БД:
 -- Таблица с выбранными компаниями
-CREATE TABLE IF NOT EXISTS companies (company_id int,
+DROP TABLE IF EXISTS companies;
+DROP TABLE IF EXISTS vacancies;
+
+CREATE TABLE companies (company_id int,
                         company_name varchar,
                         company_url text,
                         company_area varchar,
@@ -8,7 +11,7 @@ CREATE TABLE IF NOT EXISTS companies (company_id int,
                         quantity_open_vacancies int);
 
 --Таблица с открытыми вакансиями этих компаний
-CREATE TABLE IF NOT EXISTS vacancies (vacancy_id int,
+CREATE TABLE vacancies (vacancy_id int,
                         vacancy_name varchar,
                         vacancy_url varchar,
                         vacancy_area varchar,
