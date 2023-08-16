@@ -1,16 +1,14 @@
 import psycopg2
 
+from config import config
+
 
 class DBManager:
     """
     Класс для подключения к БД
     """
-    conn = psycopg2.connect(
-        host="localhost",
-        database="vacancies",
-        user="aliaksandr",
-        password='12345'
-    )
+    params = config()
+    conn = psycopg2.connect(dbname='vacancies', **params)
 
     def get_companies_and_vacancies_count(self):
         """
