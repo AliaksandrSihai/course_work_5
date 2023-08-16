@@ -58,24 +58,24 @@ class GetInfo:
             }
 
             response = requests.get(url, params=params)
-            vacancies = response.json()
-            info = vacancies['items']
-            for x in info:
-                salary = x['salary']
+            vacancies_raw_data = response.json()
+            vacancies = vacancies_raw_data['items']
+            for vacancy in vacancies:
+                salary = vacancy['salary']
                 salary_range = salary['from'] if salary and salary[
                     'from'] else 0
-                date = x['published_at']
+                date = vacancy['published_at']
                 date_str = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
                 publish_time = date_str.strftime('%Y-%m-%d')
-                info_to_column = {'vacancy_id': x['id'],
-                                  'vacancy_name': x['name'],
-                                  'vacancy_url': x['url'],
-                                  'vacancy_area': x['area']['name'],
-                                  'vacancy_requirement': x['snippet']['requirement'],
-                                  'vacancy_responsibility': x['snippet']['responsibility'],
+                info_to_column = {'vacancy_id': vacancy['id'],
+                                  'vacancy_name': vacancy['name'],
+                                  'vacancy_url': vacancy['url'],
+                                  'vacancy_area': vacancy['area']['name'],
+                                  'vacancy_requirement': vacancy['snippet']['requirement'],
+                                  'vacancy_responsibility': vacancy['snippet']['responsibility'],
                                   'vacancy_salary': salary_range,
                                   'vacancy_published_date': publish_time,
-                                  'company_id': x['employer']['id']
+                                  'company_id': vacancy['employer']['id']
                                   }
                 info_to_db.append(info_to_column)
         return info_to_db
